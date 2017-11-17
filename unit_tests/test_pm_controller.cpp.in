@@ -1,0 +1,48 @@
+#include "gtest/gtest.h"
+#include <iostream>
+#include "pm_controller.h"
+
+using namespace std;
+
+#define INIT__() Pm_Controller cont(    \
+    "@SYMBOLS@",                        \
+    "@VARIABLES@",                      \
+    "@AXIOMS@",                         \
+    "@RULES@")
+
+TEST( get_journal, String_input ) {
+    INIT__();
+    bool flag = true;
+    const list<Pm_Record>& reclist = cont.get_journal(string("111*11+111="));
+    auto it = reclist.begin();
+    flag *= (it->after.compare("111*11=111") == 0); it++;
+    flag *= (it->after.compare("11*11=11111") == 0); it++;
+    flag *= (it->after.compare("1*11=1111111") == 0); it++;
+    flag *= (it->after.compare("*11=111111111") == 0);
+    EXPECT_TRUE(flag);
+    cout << it->after << endl;
+}
+
+TEST( get_journal, File_input ) {
+    INIT__();
+    bool flag = true;
+    const list<Pm_Record>& reclist = cont.get_journal("@MYINPUT@");
+    auto it = reclist.begin();
+    flag *= (it->after.compare("111*11=111") == 0); it++;
+    flag *= (it->after.compare("11*11=11111") == 0); it++;
+    flag *= (it->after.compare("1*11=1111111") == 0); it++;
+    flag *= (it->after.compare("*11=111111111") == 0);
+    EXPECT_TRUE(flag);
+    cout << it->after << endl;
+}
+
+TEST( get_jounal, Euristic_test ) {
+    INIT__();
+    const list<Pm_Record>& reclist = cont.get_journal("@MYINPUT@");
+    auto it = reclist.begin();
+    cout << "INITIAL:\t" << it->before << endl;
+    for (;it != reclist.end(); ++it) {
+        cout << "RULE:\t" << it->used_rule.rule_in << " -> " << it->used_rule.rule_out << endl;
+        cout << "AFTER RULE:\t" << it->after << endl;
+    }
+}
