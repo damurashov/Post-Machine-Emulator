@@ -1,0 +1,11 @@
+Post Machine Emulator, St. Petersburg, SUAI, 2017
+
+INITIAL:	111*11+111=
+RULE:		+y= -> =y
+AFTER RULE:	111*11=111
+RULE:		1*x=y -> *x=yx
+AFTER RULE:	11*11=11111
+RULE:		1*x=y -> *x=yx
+AFTER RULE:	1*11=1111111
+RULE:		1*x=y -> *x=yx
+AFTER RULE:	*11=111111111

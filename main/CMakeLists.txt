@@ -1,0 +1,21 @@
+project( post_machine )
+
+if(_TEST)
+    get_filename_component( TEST_FILE_1 ../bin/TEST_FILE_1 ABSOLUTE )
+    get_filename_component( AXIOMS      ../bin/AXIOMS      ABSOLUTE )
+    get_filename_component( RULES       ../bin/RULES       ABSOLUTE )
+    get_filename_component( VARIABLES   ../bin/VARIABLES   ABSOLUTE )
+    get_filename_component( SYMBOLS     ../bin/SYMBOLS     ABSOLUTE )
+    get_filename_component( MYINPUT     ../bin/MYINPUT     ABSOLUTE )
+else()
+    set( AXIOMS AXIOMS )
+    set( RULES RULES )
+    set( VARIABLES VARIABLES )
+    set( SYMBOLS SYMBOLS )
+    set( MYINPUT MYINPUT )
+endif()
+
+configure_file( main.cpp.in
+${post_machine_SOURCE_DIR}/main.cpp)
+add_executable( post_machine main.cpp )
+target_link_libraries( post_machine pm_controller )
